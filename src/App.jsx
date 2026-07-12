@@ -53,8 +53,10 @@ export default function App() {
       <div className="frame">
 
         {/* ⭐ HAMBURGER BUTTON (mobile only) */}
-        <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
-          ☰
+         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+          <span className="ham-line"></span>
+          <span className="ham-line"></span>
+          <span className="ham-line"></span>
         </button>
 
         {/* ⭐ SIDEBAR WITH MOBILE OPEN/CLOSE */}

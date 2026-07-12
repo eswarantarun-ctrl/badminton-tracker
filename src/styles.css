@@ -1,10 +1,6 @@
 /* PAGE */
 .page {
-  /*
-  background: url("https://cmkizdcualecbmgrzynp.supabase.co/storage/v1/object/sign/background/background.JPG?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xOTk0NTMzNi1mNDc3LTQ3MjgtOGE0OC04OGVkYTc0ZDRlNDkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJiYWNrZ3JvdW5kL2JhY2tncm91bmQuSlBHIiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTc4Mzc5MzUzMiwiZXhwIjoxODE1MzI5NTMyfQ.OI1CrIvw3n0QviL5cEnZhKr3Ed-KjkdUU50gnGoyY0Y");
-  background-size: cover;
-  background-position: center; */
-  background: #f5f9f6; 
+  background: #f5f9f6;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -18,12 +14,13 @@
   height: 650px;
   border-radius: 20px;
   display: flex;
-  overflow: visible;
+  overflow: hidden;
   background: #ffffff;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  position: relative;
 }
 
-/* SIDEBAR */
+/* SIDEBAR (DESKTOP) */
 .sidebar {
   width: 240px;
   background: #e8f5e9;
@@ -32,7 +29,7 @@
   flex-direction: column;
   gap: 10px;
   border-right: 1px solid rgba(0, 0, 0, 0.05);
-  position: relative;
+  z-index: 999;
 }
 
 .sidebar-header {
@@ -51,10 +48,8 @@
   font-size: 16px;
   border-radius: 12px;
   color: #4f5b62;
-  position: relative;
 }
 
-/* ACTIVE MENU ITEM */
 .menu-item-active {
   background: #ffffff;
   color: #00c853;
@@ -67,20 +62,7 @@
   flex: 1;
   background: #ffffff;
   color: #1b1b1b;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding-top: 40px;
-}
-
-/* PAGE STYLES */
-.leaderboard-page,
-.weekly-page,
-.stats-page,
-.teams-page,
-.players-page {
   padding: 40px;
-  text-align: center;
 }
 
 /* LOGIN PAGE */
@@ -89,7 +71,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin: 0 auto;               /* centers horizontally */
+  margin: 0 auto;
   align-self: center;
   text-align: center;
 }
@@ -228,15 +210,21 @@
   align-items: center;
 }
 
+/* Scroll wrapper */
+.leaderboard-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .leaderboard-card {
   background: white;
   padding: 25px;
   width: 650px;
+  min-width: 650px;
   border-radius: 12px;
   box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
 }
 
-/* COLUMN HEADERS */
 .leaderboard-header {
   display: flex;
   justify-content: space-between;
@@ -247,50 +235,33 @@
   margin-bottom: 8px;
 }
 
+.leaderboard-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.10);
+}
+
+.leaderboard-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 14px rgba(0,0,0,0.15);
+}
+
 .rank {
   width: 50px;
   text-align: center;
   font-weight: 600;
 }
 
-
-/* ROWS */
-.leaderboard-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 14px 16px;
-  margin-bottom: 12px;
-
-  background: #ffffff;
-  border-radius: 10px;                 /* ⭐ curved corners */
-  box-shadow: 0px 3px 8px rgba(0,0,0,0.10);  /* ⭐ soft shadow */
-
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-/* Optional: hover effect */
-.leaderboard-row:hover {
-  transform: translateY(-2px);
-  box-shadow: 0px 6px 14px rgba(0,0,0,0.15);
-}
-
-/* Remove old table line */
-.leaderboard-row:last-child {
-  border-bottom: none;
-}
-
-
-
 .team-name {
   width: 200px;
   text-align: center;
   font-weight: 600;
-
 }
-
-
 
 .wins,
 .played,
@@ -308,13 +279,49 @@
   text-align: center;
 }
 
-/* 📱 MOBILE RESPONSIVE FIX */
+/* ⭐ Hamburger button */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  width: 42px;
+  height: 42px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.15);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Hamburger lines */
+.ham-line {
+  width: 22px;
+  height: 3px;
+  background: #333;
+  border-radius: 2px;
+}
+
+/* ⭐ MOBILE MODE */
 @media (max-width: 768px) {
+
+  /* Show hamburger */
+  .hamburger {
+    display: flex;
+  }
+
 
   .page {
     height: auto;
-    padding: 20px 0;
     align-items: flex-start;
+    padding-top: 60px;
   }
 
   .frame {
@@ -325,46 +332,27 @@
     box-shadow: none;
   }
 
+
+  /* Sidebar becomes sliding drawer */
   .sidebar {
-    width: 100%;
-    padding: 20px;
-    border-right: none;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100vh;
+    width: 240px;
+    padding-top: 100px; /* space for header */
+    background: #e8f5e9;
+    transition: left 0.3s ease;
+    z-index: 1500;
+  }
+
+  .sidebar-open {
+    left: 0;
   }
 
   .content {
     width: 100%;
     padding: 20px;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .leaderboard-card {
-    width: 100%;
-    max-width: 100%;
-    padding: 16px;
-  }
-
-  .leaderboard-header,
-  .leaderboard-row {
-    flex-wrap: wrap;
-    text-align: center;
-  }
-
-  .team-name {
-    width: 100%;
-    margin-bottom: 8px;
-  }
-
-  .wins,
-  .played,
-  .losses,
-  .percent {
-    width: 25%;
   }
 
   .login-page {
@@ -375,13 +363,4 @@
     width: 100%;
     max-width: 100%;
   }
-}
-/* ⭐ Scrollable leaderboard on mobile */
-.leaderboard-scroll {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.leaderboard-card {
-  min-width: 650px;   /* keeps desktop layout */
 }
