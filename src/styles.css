@@ -376,3 +376,12 @@
     max-width: 100%;
   }
 }
+/* ⭐ Scrollable leaderboard on mobile */
+.leaderboard-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.leaderboard-card {
+  min-width: 650px;   /* keeps desktop layout */
+}

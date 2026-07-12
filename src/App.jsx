@@ -12,6 +12,7 @@ import Profile from "./components/Profile";
 
 export default function App() {
   const [selected, setSelected] = useState("Leaderboard");
+  const [menuOpen, setMenuOpen] = useState(false);   // ⭐ REQUIRED
 
   const menuItems = [
     "Leaderboard",
@@ -25,8 +26,6 @@ export default function App() {
   ];
 
   const renderPage = () => {
-    console.log("Selected page:", selected);
-
     switch (selected) {
       case "Leaderboard":
         return <Leaderboard />;
@@ -41,7 +40,7 @@ export default function App() {
       case "Login":
         return <Login />;
       case "Add Game":
-         return <AddGame />;
+        return <AddGame />;
       case "Profile":
         return <Profile />;
       default:
@@ -52,9 +51,14 @@ export default function App() {
   return (
     <div className="page">
       <div className="frame">
-        
-        {/* LEFT SIDEBAR */}
-        <div className="sidebar">
+
+        {/* ⭐ HAMBURGER BUTTON (mobile only) */}
+        <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+          ☰
+        </button>
+
+        {/* ⭐ SIDEBAR WITH MOBILE OPEN/CLOSE */}
+        <div className={`sidebar ${menuOpen ? "sidebar-open" : ""}`}>
           <div className="sidebar-header">Badminton Hub</div>
 
           {menuItems.map((item) => {
@@ -63,10 +67,11 @@ export default function App() {
             return (
               <div
                 key={item}
-                onClick={() => setSelected(item)}
-                className={
-                  active ? "menu-item menu-item-active" : "menu-item"
-                }
+                onClick={() => {
+                  setSelected(item);
+                  setMenuOpen(false);   // ⭐ Close menu after selecting
+                }}
+                className={active ? "menu-item menu-item-active" : "menu-item"}
               >
                 {item}
               </div>
