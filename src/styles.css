@@ -307,3 +307,72 @@
   color: #777;
   text-align: center;
 }
+
+/* 📱 MOBILE RESPONSIVE FIX */
+@media (max-width: 768px) {
+
+  .page {
+    height: auto;
+    padding: 20px 0;
+    align-items: flex-start;
+  }
+
+  .frame {
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 20px;
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .content {
+    width: 100%;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .leaderboard-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+  }
+
+  .leaderboard-header,
+  .leaderboard-row {
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  .team-name {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .wins,
+  .played,
+  .losses,
+  .percent {
+    width: 25%;
+  }
+
+  .login-page {
+    width: 90%;
+  }
+
+  .add-game-page {
+    width: 100%;
+    max-width: 100%;
+  }
+}
