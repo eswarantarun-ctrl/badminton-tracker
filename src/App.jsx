@@ -61,7 +61,7 @@ export default function App() {
 
         {/* ⭐ SIDEBAR WITH MOBILE OPEN/CLOSE */}
         <div className={`sidebar ${menuOpen ? "sidebar-open" : ""}`}>
-          <div className="sidebar-header">Badminton Hub</div>
+          <div className="sidebar-header">HAVE 4?</div>
 
           {menuItems.map((item) => {
             const active = selected === item;
