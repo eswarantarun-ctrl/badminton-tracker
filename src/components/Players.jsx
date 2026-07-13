@@ -79,27 +79,66 @@ export default function Players() {
   }, []);
 
   return (
-    <div className="players-page">
-      <h2 className="title">Players</h2>
+  <div className="players-page">
+    <h2 className="title">Players</h2>
 
-      <div className="players-grid">
-        {players.map((p) => (
-          <div key={p.id} className="player-card">
-            <div className="player-avatar">
+    <div className="players-grid">
+      {players.map((p) => (
+        <div key={p.id} className="player-card">
+
+          {/* Top Section: Avatar + Full-Height Name */}
+          <div className="player-top">
+
+            <div className="player-avatar-rect">
               <img src={p.avatar} alt={p.name} />
             </div>
 
-            <div className="player-name">{p.name}</div>
-
-            <div className="player-stats">
-              <div><strong>Played:</strong> {p.played}</div>
-              <div><strong>Wins:</strong> {p.wins}</div>
-              <div><strong>Losses:</strong> {p.losses}</div>
-              <div><strong>Rating:</strong> {p.rating}%</div>
+            <div className="player-name-fullheight">
+              {p.name}
             </div>
+
           </div>
-        ))}
-      </div>
+
+          {/* Stats Section */}
+          <div className="player-stats">
+
+            <div className="player-stat-box">
+              <div className="player-stat-row">
+                <div className="player-stat-label">Played</div>
+                <div className="player-stat-value">{p.played}</div>
+              </div>
+            </div>
+
+            <div className="player-stat-box">
+              <div className="player-stat-row">
+                <div className="player-stat-label">Wins</div>
+                <div className="player-stat-value">{p.wins}</div>
+              </div>
+            </div>
+
+            <div className="player-stat-box">
+              <div className="player-stat-row">
+                <div className="player-stat-label">Losses</div>
+                <div className="player-stat-value">{p.losses}</div>
+              </div>
+            </div>
+
+            <div className="player-stat-box">
+              <div className="player-stat-row">
+                <div className="player-stat-label">Rating</div>
+                <div className="player-stat-value">{p.rating}%</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      ))}
     </div>
-  );
+  </div>
+);
+
+
+
+
 }
