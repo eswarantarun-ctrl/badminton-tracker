@@ -364,3 +364,56 @@
     max-width: 100%;
   }
 }
+
+/* PLAYERS PAGE */
+.players-page {
+  width: 100%;
+  text-align: center;
+}
+
+.players-grid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px;
+  padding: 20px;
+
+  max-height: 70vh;     /* ⭐ limit height */
+  overflow-y: auto;     /* ⭐ scroll inside grid */
+}
+
+
+.player-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.player-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+}
+
+.player-avatar img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+  border: 3px solid #00c853;
+}
+
+.player-name {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1b1b1b;
+}
+
+.player-stats {
+  font-size: 15px;
+  color: #4f5b62;
+  line-height: 1.6;
+}

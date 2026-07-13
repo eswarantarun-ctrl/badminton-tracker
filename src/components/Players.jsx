@@ -1,8 +1,105 @@
+import { useEffect, useState } from "react";
+import { supabase } from "../supabaseClient";
+
 export default function Players() {
+  const [players, setPlayers] = useState([]);
+
+  useEffect(() => {
+    async function loadPlayers() {
+      // 1️⃣ Fetch all players
+      const { data: playersData } = await supabase
+        .from("players")
+        .select("id, display_name");
+
+      if (!playersData) return;
+
+      // 2️⃣ Fetch all teams
+      const { data: teams } = await supabase
+        .from("teams")
+        .select("id, player1_id, player2_id");
+
+      // Build a map: team_id → [player1_id, player2_id]
+      const teamPlayers = {};
+      teams.forEach((t) => {
+        teamPlayers[t.id] = [t.player1_id, t.player2_id];
+      });
+
+      // 3️⃣ Fetch matches
+      const { data: matches } = await supabase
+        .from("matches")
+        .select("winner_team_id, loser_team_id");
+
+      // Initialize stats
+      const stats = {};
+      playersData.forEach((p) => {
+        stats[p.id] = { played: 0, wins: 0, losses: 0 };
+      });
+
+      // 4️⃣ Compute stats
+      matches?.forEach((m) => {
+        const winners = teamPlayers[m.winner_team_id] || [];
+        const losers = teamPlayers[m.loser_team_id] || [];
+
+        winners.forEach((pid) => {
+          if (pid && stats[pid]) {
+            stats[pid].played++;
+            stats[pid].wins++;
+          }
+        });
+
+        losers.forEach((pid) => {
+          if (pid && stats[pid]) {
+            stats[pid].played++;
+            stats[pid].losses++;
+          }
+        });
+      });
+
+      // 5️⃣ Build final player list
+      const finalPlayers = playersData.map((p) => {
+        const s = stats[p.id];
+        const rating =
+          s.played > 0 ? ((s.wins / s.played) * 100).toFixed(1) : "0.0";
+
+        return {
+          id: p.id,
+          name: p.display_name,
+          avatar: `https://api.dicebear.com/7.x/notionists/svg?seed=${p.display_name}`,
+          played: s.played,
+          wins: s.wins,
+          losses: s.losses,
+          rating,
+        };
+      });
+
+      setPlayers(finalPlayers);
+    }
+
+    loadPlayers();
+  }, []);
+
   return (
     <div className="players-page">
       <h2 className="title">Players</h2>
-      <p className="subtitle">Player profiles and information.</p>
+
+      <div className="players-grid">
+        {players.map((p) => (
+          <div key={p.id} className="player-card">
+            <div className="player-avatar">
+              <img src={p.avatar} alt={p.name} />
+            </div>
+
+            <div className="player-name">{p.name}</div>
+
+            <div className="player-stats">
+              <div><strong>Played:</strong> {p.played}</div>
+              <div><strong>Wins:</strong> {p.wins}</div>
+              <div><strong>Losses:</strong> {p.losses}</div>
+              <div><strong>Rating:</strong> {p.rating}%</div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
