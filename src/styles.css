@@ -742,16 +742,13 @@
   margin-top: 10px;
 }
 @media (max-width: 768px) {
-
-  /* Shrink columns */
   .leaderboard-row,
   .leaderboard-header,
   .monthly-row,
   .monthly-header {
     grid-template-columns: 30px 1fr 60px 60px 60px 60px;
-    padding: 6px 10px;
-    font-size: 13px;
   }
+}
 
   /* Prevent text wrapping */
   .leaderboard-row div,
@@ -774,5 +771,12 @@
   .content {
     padding: 10px;
   }
+
+
+.leaderboard-row div:nth-child(2),
+.monthly-row div:nth-child(2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
