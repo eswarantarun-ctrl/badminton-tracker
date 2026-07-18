@@ -771,12 +771,20 @@
   .content {
     padding: 10px;
   }
+/* Make ALL leaderboard tables scroll horizontally */
+.leaderboard-scroll,
+.month-scroll {
+  overflow-x: auto !important;
+  overflow-y: auto;
+  white-space: nowrap !important;
+  width: 100%;
+}
 
-
-.leaderboard-row div:nth-child(2),
-.monthly-row div:nth-child(2) {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+/* Prevent grid from collapsing */
+.leaderboard-row,
+.leaderboard-header,
+.monthly-row,
+.monthly-header {
+  min-width: 520px; /* forces horizontal scroll */
 }
 
