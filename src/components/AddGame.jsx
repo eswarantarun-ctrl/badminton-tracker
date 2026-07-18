@@ -160,7 +160,7 @@ export default function AddGame() {
   return (
     <div className="add-game-page">
 
-  <h2 className="add-game-title">Add Game</h2>
+  
 
   <div className="teams-box">
 

@@ -1,107 +1,189 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
+import PlayerLeaderboard from "./PlayerLeaderboard";
 
 export default function Leaderboard() {
-  const [rows, setRows] = useState([]);
+  const [activeTab, setActiveTab] = useState("teams");
+  const [teams, setTeams] = useState([]);
+  const [players, setPlayers] = useState([]);
 
   useEffect(() => {
-    async function loadLeaderboard() {
-      const { data: matches, error } = await supabase
-        .from("matches")
-        .select("winner_team_id, loser_team_id");
-
-      if (error) {
-        console.log(error);
-        return;
-      }
-
-      const winCount = {};
-      const lossCount = {};
-      const gamesPlayed = {};
-
-      matches.forEach((m) => {
-        winCount[m.winner_team_id] = (winCount[m.winner_team_id] || 0) + 1;
-        lossCount[m.loser_team_id] = (lossCount[m.loser_team_id] || 0) + 1;
-
-        gamesPlayed[m.winner_team_id] =
-          (gamesPlayed[m.winner_team_id] || 0) + 1;
-
-        gamesPlayed[m.loser_team_id] =
-          (gamesPlayed[m.loser_team_id] || 0) + 1;
-      });
-
-      const playedTeams = new Set();
-      matches.forEach((m) => {
-        playedTeams.add(m.winner_team_id);
-        playedTeams.add(m.loser_team_id);
-      });
-
-      const { data: teams } = await supabase
-        .from("teams")
-        .select("*")
-        .in("id", Array.from(playedTeams));
-
-      const leaderboard = teams.map((team) => {
-        const wins = winCount[team.id] || 0;
-        const losses = lossCount[team.id] || 0;
-        const played = gamesPlayed[team.id] || 0;
-
-        const winPercentage =
-          played > 0 ? ((wins / played) * 100).toFixed(1) : "0.0";
-
-        return {
-          id: team.id,
-          team_name: team.team_name,
-          wins,
-          losses,
-          played,
-          winPercentage,
-        };
-      });
-
-      leaderboard.sort((a, b) => b.wins - a.wins);
-
-      setRows(leaderboard);
-    }
-
-    loadLeaderboard();
+    loadTeams();
+    loadPlayers();
   }, []);
 
-  return (
-    <div className="leaderboard-wrapper">
+  /* ---------------- TEAM LEADERBOARD ---------------- */
+  async function loadTeams() {
+    const { data: teamsData } = await supabase
+      .from("teams")
+      .select("id, team_name");
 
-      {/* ⭐ SCROLL WRAPPER */}
+    const { data: matches } = await supabase
+      .from("matches")
+      .select("winner_team_id, loser_team_id");
+
+    const stats = {};
+
+    // initialize stats
+    teamsData.forEach((t) => {
+      stats[t.id] = { played: 0, wins: 0, losses: 0 };
+    });
+
+    // compute stats
+    matches?.forEach((m) => {
+      if (stats[m.winner_team_id]) {
+        stats[m.winner_team_id].played++;
+        stats[m.winner_team_id].wins++;
+      }
+      if (stats[m.loser_team_id]) {
+        stats[m.loser_team_id].played++;
+        stats[m.loser_team_id].losses++;
+      }
+    });
+
+    // build final list + filter out teams with no games
+    const finalTeams = teamsData
+      .map((t) => ({
+        id: t.id,
+        name: t.team_name,
+        played: stats[t.id].played,
+        wins: stats[t.id].wins,
+        losses: stats[t.id].losses,
+      }))
+      .filter((t) => t.played > 0); // ⭐ only teams who played
+
+    setTeams(finalTeams);
+  }
+
+  /* ---------------- PLAYER LEADERBOARD ---------------- */
+  async function loadPlayers() {
+    const { data: playersData } = await supabase
+      .from("players")
+      .select("id, display_name");
+
+    const { data: teamsData } = await supabase
+      .from("teams")
+      .select("id, player1_id, player2_id");
+
+    const { data: matches } = await supabase
+      .from("matches")
+      .select("winner_team_id, loser_team_id");
+
+    const teamPlayers = {};
+    teamsData.forEach((t) => {
+      teamPlayers[t.id] = [t.player1_id, t.player2_id];
+    });
+
+    const stats = {};
+    playersData.forEach((p) => {
+      stats[p.id] = { played: 0, wins: 0, losses: 0 };
+    });
+
+    matches?.forEach((m) => {
+      const winners = teamPlayers[m.winner_team_id] || [];
+      const losers = teamPlayers[m.loser_team_id] || [];
+
+      winners.forEach((pid) => {
+        if (pid && stats[pid]) {
+          stats[pid].played++;
+          stats[pid].wins++;
+        }
+      });
+
+      losers.forEach((pid) => {
+        if (pid && stats[pid]) {
+          stats[pid].played++;
+          stats[pid].losses++;
+        }
+      });
+    });
+
+    const finalPlayers = playersData.map((p) => {
+      const s = stats[p.id];
+      const rating =
+        s.played > 0 ? ((s.wins / s.played) * 100).toFixed(1) : "0.0";
+
+      return {
+        id: p.id,
+        name: p.display_name,
+        played: s.played,
+        wins: s.wins,
+        losses: s.losses,
+        rating,
+      };
+    });
+
+    setPlayers(finalPlayers);
+  }
+
+  /* ---------------- RENDER ---------------- */
+  /* ---------------- RENDER ---------------- */
+return (
+  <div className="leaderboard-page">
+
+    {/* Tabs */}
+    <div className="leaderboard-tabs">
+      <button
+        className={`tab-btn ${activeTab === "teams" ? "active" : ""}`}
+        onClick={() => setActiveTab("teams")}
+      >
+        Teams
+      </button>
+
+      <button
+        className={`tab-btn ${activeTab === "players" ? "active" : ""}`}
+        onClick={() => setActiveTab("players")}
+      >
+        Players
+      </button>
+    </div>
+
+    {/* Content */}
+    <div className="leaderboard-content">
+
+      {/* ⭐ Scrollable wrapper */}
       <div className="leaderboard-scroll">
 
-        {/* TABLE CARD */}
-        <div className="leaderboard-card">
+        {/* TEAM LEADERBOARD */}
+        {activeTab === "teams" && (
+          <div className="team-leaderboard">
 
-          {/* COLUMN HEADERS */}
-          <div className="leaderboard-header">
-            <div className="rank">Rank</div>
-            <div className="team-name">Team</div>
-            <div className="wins">Wins</div>
-            <div className="played">Played</div>
-            <div className="losses">Losses</div>
-            <div className="percent">Win %</div>
-          </div>
-
-          {rows.length === 0 && (
-            <div className="leaderboard-empty">No games recorded yet.</div>
-          )}
-
-          {rows.map((row, index) => (
-            <div key={row.id} className="leaderboard-row">
-              <div className="rank">{index + 1}</div>
-              <div className="team-name">{row.team_name}</div>
-              <div className="wins">{row.wins}</div>
-              <div className="played">{row.played}</div>
-              <div className="losses">{row.losses}</div>
-              <div className="percent">{row.winPercentage}%</div>
+            {/* COLUMN HEADERS */}
+            <div className="leaderboard-header leaderboard-row">
+              <div className="leaderboard-rank">#</div>
+              <div className="leaderboard-name">Team</div>
+              <div className="leaderboard-stat">Played</div>
+              <div className="leaderboard-stat">Wins</div>
+              <div className="leaderboard-stat">Losses</div>
+              <div className="leaderboard-stat">Win %</div>
             </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+
+            {teams.sort((a, b) => b.wins - a.wins).map((t, index) => (
+              <div key={t.id} className="leaderboard-row">
+                <div className="leaderboard-rank">{index + 1}</div>
+                <div className="leaderboard-name">{t.name}</div>
+                <div className="leaderboard-stat">{t.played}</div>
+                <div className="leaderboard-stat">{t.wins}</div>
+                <div className="leaderboard-stat">{t.losses}</div>
+                <div className="leaderboard-stat">
+                  {((t.wins / t.played) * 100).toFixed(1)}%
+                </div>
+              </div>
+            ))}
+
+          </div>
+        )}
+
+        {/* PLAYER LEADERBOARD */}
+        {activeTab === "players" && (
+          <PlayerLeaderboard players={players} />
+        )}
+
+      </div> {/* END leaderboard-scroll */}
+
+    </div> {/* END leaderboard-content */}
+
+  </div> /* END leaderboard-page */
+);
+
 }

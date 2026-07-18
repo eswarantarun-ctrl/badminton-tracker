@@ -1,6 +1,6 @@
 /* PAGE */
 .page {
-  background: #f5f9f6;
+  background: #ffffff;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -12,7 +12,7 @@
 .frame {
   width: 1000px;
   height: 650px;
-  border-radius: 20px;
+  /*border-radius: 20px; */
   display: flex;
   overflow: hidden;
   background: #ffffff;
@@ -20,14 +20,14 @@
   position: relative;
 }
 
-/* SIDEBAR (DESKTOP) */
+/* SIDEBAR */
 .sidebar {
   width: 240px;
-  background: #e8f5e9;
-  padding: 30px 0;
+  background: #ffffff;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0;
   border-right: 1px solid rgba(0, 0, 0, 0.05);
   z-index: 999;
 }
@@ -36,26 +36,96 @@
   color: #1b1b1b;
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 20px;
-  padding-left: 20px;
+  padding: 20px;
+  margin-bottom: 10px;
 }
 
 /* MENU ITEM */
 .menu-item {
-  padding: 14px 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 20px;
   cursor: pointer;
-  transition: all 0.25s ease;
   font-size: 16px;
-  border-radius: 12px;
-  color: #4f5b62;
+  color: #000; /* ⭐ text is black */
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: color 0.25s ease;
 }
 
-.menu-item-active {
-  background: #ffffff;
-  color: #00c853;
-  font-weight: 600;
-  transform: translateX(6px);
+/* Text always above background */
+.menu-item > * {
+  position: relative;
+  z-index: 3;
 }
+
+/* ⭐ Premium Notion-style glow (light red) */
+/* ⭐ Very subtle grey gradient glow */
+.menu-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0.04) 0%,
+    rgba(0,0,0,0.06) 50%,
+    rgba(0,0,0,0.04) 100%
+  ); /* ⭐ soft professional gradient */
+  opacity: 0;
+  transform: scale(0.99);
+  border-radius: 8px;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+  z-index: 1;
+}
+
+.menu-item-active::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+/* ⭐ Premium left bar (red) */
+.menu-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 8px;
+  background: #f00505;
+  opacity: 0;
+  transform: scaleY(0.4);
+  transform-origin: center;
+  transition:
+    opacity 0.25s ease,
+    transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+  z-index: 2;
+}
+
+.menu-item-active::after {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+
+/* Active text */
+.menu-item-active {
+  color: #000; /* ⭐ stays black */
+  font-weight: 700; /* ⭐ slightly stronger for clarity */
+}
+
+/* Hover (subtle, professional) */
+.menu-item:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
 
 /* CONTENT AREA */
 .content {
@@ -63,6 +133,7 @@
   background: #ffffff;
   color: #1b1b1b;
   padding: 40px;
+ 
 }
 
 /* LOGIN PAGE */
@@ -85,7 +156,7 @@
 
 .login-button {
   padding: 12px;
-  background: #00c853;
+  background: #000000;
   color: white;
   border: none;
   border-radius: 10px;
@@ -95,15 +166,22 @@
 }
 
 .login-button:hover {
-  background: #00b44a;
+  background: #000000;
 }
 
 /* TITLES */
 .title {
-  font-size: 32px;
+  width: 150px;
+  text-align: center;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: #000000;
+  border: none;
+  font-size: 15px;
   font-weight: 600;
-  margin-bottom: 10px;
-  color: #00c853;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .subtitle {
@@ -120,9 +198,17 @@
 }
 
 .add-game-title {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 25px;
+   width: 150px;
+  text-align: center;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: #000000;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .teams-box {
@@ -185,7 +271,7 @@
 .save-btn {
   width: 100%;
   padding: 12px;
-  background: #00c853;
+  background: #000000;
   color: white;
   border: none;
   border-radius: 8px;
@@ -194,7 +280,7 @@
 }
 
 .save-btn:hover {
-  background: #00b44a;
+  background: #cfcfcf;
 }
 
 .status-msg {
@@ -203,81 +289,46 @@
 }
 
 /* ⭐ LEADERBOARD STYLES */
-.leaderboard-wrapper {
-  width: 100%;
+/* Tabs */
+.leaderboard-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: #f2f2f2;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  background: #222;
+  color: #fff;
+}
+
+.tab-btn:hover {
+  background: #ddd;
+}
+
+/* Content */
+.leaderboard-content {
+  margin-top: 10px;
+}
+
+/* Team Leaderboard */
+.team-leaderboard {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 12px;
 }
 
-/* Scroll wrapper */
-.leaderboard-scroll {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.leaderboard-card {
-  background: white;
-  padding: 25px;
-  width: 650px;
-  min-width: 650px;
-  border-radius: 12px;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-}
-
-.leaderboard-header {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px;
-  font-weight: 600;
-  color: #4f5b62;
-  border-bottom: 2px solid #e0e0e0;
-  margin-bottom: 8px;
-}
-
-.leaderboard-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 16px;
-  margin-bottom: 12px;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 3px 8px rgba(0,0,0,0.10);
-}
-
-.leaderboard-row:hover {
-  transform: translateY(-2px);
-  box-shadow: 0px 6px 14px rgba(0,0,0,0.15);
-}
-
-.rank {
-  width: 50px;
-  text-align: center;
-  font-weight: 600;
-}
-
-.team-name {
-  width: 200px;
-  text-align: center;
-  font-weight: 600;
-}
-
-.wins,
-.played,
-.losses,
-.percent {
-  width: 60px;
-  text-align: center;
-  font-weight: 600;
-}
-
-.leaderboard-empty {
-  padding: 20px;
-  font-size: 16px;
-  color: #777;
-  text-align: center;
-}
 
 /* ⭐ Hamburger button */
 .hamburger {
@@ -317,7 +368,6 @@
     display: flex;
   }
 
-
   .page {
     height: auto;
     align-items: flex-start;
@@ -332,7 +382,6 @@
     box-shadow: none;
   }
 
-
   /* Sidebar becomes sliding drawer */
   .sidebar {
     position: fixed;
@@ -341,7 +390,8 @@
     height: 100vh;
     width: 240px;
     padding-top: 100px; /* space for header */
-    background: #e8f5e9;
+   background: #ffffff;
+;
     transition: left 0.3s ease;
     z-index: 1500;
   }
@@ -364,6 +414,7 @@
     max-width: 100%;
   }
 }
+
 /* PLAYERS PAGE */
 .players-page {
   width: 100%;
@@ -373,20 +424,12 @@
 }
 
 /* GRID */
-.players-grid {
-  margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 30px;
-  padding: 20px;
-}
-/* CARD CONTAINER */
-/* CARD */
+/* CARD — smaller, tighter */
 .player-card {
   background: #ffffff;
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0px 6px 18px rgba(0,0,0,0.08);
+  border-radius: 16px;
+  padding: 20px; /* reduced */
+  box-shadow: 0px 5px 14px rgba(0,0,0,0.06);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -394,9 +437,20 @@
 }
 
 .player-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0px 10px 28px rgba(0,0,0,0.12);
+  transform: translateY(-3px);
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.10);
 }
+
+/* GRID — smaller spacing */
+.players-grid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); /* was 280px */
+  gap: 30px;
+  padding: 20px;
+}
+
+
 
 /* TOP SECTION */
 .player-top {
@@ -408,12 +462,12 @@
 
 /* RECTANGULAR AVATAR */
 .player-avatar-rect {
-  width: 140px;
-  height: 160px;
-  border-radius: 12px;
+  width: 120px;   /* was 140 */
+  height: 140px;  /* was 160 */
+  border-radius: 10px;
   overflow: hidden;
   background: #ffffff;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.12);
 }
 
 .player-avatar-rect img {
@@ -444,25 +498,29 @@
 /* STATS SECTION */
 .player-stats {
   width: 100%;
-  margin-top: 22px;
+  margin-top: 16px; /* reduced */
 }
+
 
 /* STAT BOX */
+/* STAT BOX — tighter */
 .player-stat-box {
   background: #f8f8f8;
-  padding: 14px 16px;
-  border-radius: 10px;
-  margin-bottom: 12px;
-  box-shadow: 0px 3px 8px rgba(0,0,0,0.08);
+  padding: 10px 12px; /* reduced */
+  border-radius: 8px;
+  margin-bottom: 8px; /* reduced */
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.06);
 }
 
-/* STAT ROW */
+/* STAT ROW — tighter grid */
 .player-stat-row {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  font-size: 15px;
+  grid-template-columns: 100px 1fr; /* narrower label column */
+  font-size: 14px; /* slightly smaller */
   color: #555;
+  row-gap: 2px; /* ⭐ closer rows */
 }
+
 
 .player-stat-label {
   font-weight: 600;
@@ -474,10 +532,214 @@
   color: #222;
 }
 
-
 /* MOBILE */
 @media (max-width: 768px) {
   .players-grid {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
 }
+
+/* ⭐ UNIFIED LEADERBOARD ROWS (Teams + Players) */
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 80px 80px 80px 80px;
+  background: #ffffff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.06);
+  align-items: center;
+  min-height: 15px;
+}
+
+/* ⭐ UNIFIED HEADER ROW */
+.leaderboard-header {
+  background: #f2f2f2;
+  font-weight: 700;
+  box-shadow: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  min-height: 15px;
+}
+
+/* ⭐ UNIFIED TEXT STYLES */
+.leaderboard-rank {
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+}
+
+.leaderboard-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.leaderboard-stat {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+  color: #555;
+}
+
+/* ⭐ UNIFIED SPACING BETWEEN ROWS */
+.team-leaderboard,
+.player-leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ⭐ Scrollable leaderboard container (vertical + horizontal) */
+.leaderboard-scroll {
+  max-height: 420px;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding-right: 6px;
+  padding-bottom: 6px;
+  white-space: nowrap;
+}
+
+/* Optional: nicer scrollbar */
+.leaderboard-scroll::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.leaderboard-scroll::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.leaderboard-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.month-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
+
+.month-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+}
+
+.month-arrow {
+  font-size: 22px;     /* match monthly ranking chevron size */
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+
+.month-arrow:hover {
+  transform: translateY(-2px);   /* subtle premium motion */
+  opacity: 0.7;                  /* minimalistic hover */
+}
+
+.month-arrow:active {
+  transform: translateY(0px);
+  opacity: 1;
+}
+
+
+
+
+.month-scroll {
+  max-height: 420px;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding-right: 6px;
+  padding-bottom: 6px;
+  white-space: nowrap;
+}
+
+.monthly-header {
+  background: #f2f2f2;
+  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 40px 1fr 80px 80px 80px 80px;
+  align-items: center;
+}
+
+.monthly-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 80px 80px 80px 80px;
+  background: #ffffff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.06);
+  align-items: center;
+  margin-top: 8px;
+}
+
+.month-rank {
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+}
+
+.month-team {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.month-stat {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+  color: #555;
+}
+.avatar-section {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.avatar-scroll {
+  max-height: 220px;     /* smaller height so button is visible */
+  overflow-y: auto;
+  width: 100%;
+  margin-bottom: 20px;   /* IMPORTANT: creates space for Save button */
+  padding-right: 6px;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.save-avatar-btn {
+  background: #000000;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+

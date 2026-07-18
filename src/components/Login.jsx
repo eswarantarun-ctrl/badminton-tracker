@@ -84,7 +84,7 @@ export default function Login() {
   if (user) {
     return (
       <div className="login-page">
-        <h2 className="title">Logged In</h2>
+        
         <p className="subtitle">
           Logged in as <strong>{profile?.display_name}</strong>
         </p>
@@ -99,7 +99,7 @@ export default function Login() {
   // ⭐ Otherwise show login/signup form
   return (
     <div className="login-page">
-      <h2 className="title">{isSignup ? "Sign Up" : "Login"}</h2>
+      
 
       <input
         className="login-input"

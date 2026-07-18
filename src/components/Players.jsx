@@ -9,7 +9,11 @@ export default function Players() {
       // 1️⃣ Fetch all players
       const { data: playersData } = await supabase
         .from("players")
-        .select("id, display_name");
+        .select("id, display_name, avatar_url, user_id");
+        console.log("PLAYERS FROM SUPABASE:", playersData);
+
+        
+        
 
       if (!playersData) return;
 
@@ -64,7 +68,7 @@ export default function Players() {
         return {
           id: p.id,
           name: p.display_name,
-          avatar: `https://api.dicebear.com/7.x/notionists/svg?seed=${p.display_name}`,
+          avatar: p.avatar_url || `https://api.dicebear.com/7.x/notionists/svg?seed=${p.user_id}`,
           played: s.played,
           wins: s.wins,
           losses: s.losses,
@@ -80,7 +84,7 @@ export default function Players() {
 
   return (
   <div className="players-page">
-    <h2 className="title">Players</h2>
+    
 
     <div className="players-grid">
       {players.map((p) => (

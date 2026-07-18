@@ -2,21 +2,24 @@ import { useState } from "react";
 import "./styles.css";
 
 import Leaderboard from "./components/Leaderboard";
-import WeeklyRanking from "./components/WeeklyRanking";
+import MonthlyRanking from "./components/MonthlyRanking";
 import Stats from "./components/Stats";
 import Teams from "./components/Teams";
 import Players from "./components/Players";
 import Login from "./components/Login";
 import AddGame from "./components/AddGame";
 import Profile from "./components/Profile";
+import DailyRanking from "./components/DailyRanking";
+
 
 export default function App() {
   const [selected, setSelected] = useState("Leaderboard");
-  const [menuOpen, setMenuOpen] = useState(false);   // ⭐ REQUIRED
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const menuItems = [
     "Leaderboard",
-    "Weekly Ranking",
+    "Daily Ranking",
+    "Monthly Ranking",
     "Stats",
     "Teams",
     "Players",
@@ -29,8 +32,10 @@ export default function App() {
     switch (selected) {
       case "Leaderboard":
         return <Leaderboard />;
-      case "Weekly Ranking":
-        return <WeeklyRanking />;
+      case "Daily Ranking":        // ⭐ ADD THIS
+        return <DailyRanking />;
+      case "Monthly Ranking":
+        return <MonthlyRanking />;
       case "Stats":
         return <Stats />;
       case "Teams":
@@ -51,40 +56,36 @@ export default function App() {
   return (
     <div className="page">
       <div className="frame">
-
-        {/* ⭐ HAMBURGER BUTTON (mobile only) */}
-         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+        {/* Hamburger (mobile) */}
+        <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           <span className="ham-line"></span>
           <span className="ham-line"></span>
           <span className="ham-line"></span>
         </button>
 
-        {/* ⭐ SIDEBAR WITH MOBILE OPEN/CLOSE */}
+        {/* Sidebar */}
         <div className={`sidebar ${menuOpen ? "sidebar-open" : ""}`}>
           <div className="sidebar-header">HAVE 4?</div>
 
           {menuItems.map((item) => {
             const active = selected === item;
-
             return (
               <div
                 key={item}
                 onClick={() => {
                   setSelected(item);
-                  setMenuOpen(false);   // ⭐ Close menu after selecting
+                  setMenuOpen(false);
                 }}
                 className={active ? "menu-item menu-item-active" : "menu-item"}
               >
-                {item}
+                <span className="menu-label">{item}</span>
               </div>
             );
           })}
         </div>
 
-        {/* RIGHT CONTENT */}
-        <div className="content">
-          {renderPage()}
-        </div>
+        {/* Content */}
+        <div className="content">{renderPage()}</div>
       </div>
     </div>
   );
