@@ -741,21 +741,38 @@
   font-weight: 600;
   margin-top: 10px;
 }
-
 @media (max-width: 768px) {
+
+  /* Shrink columns */
   .leaderboard-row,
   .leaderboard-header,
   .monthly-row,
   .monthly-header {
-    grid-template-columns: 30px 1fr 60px 60px 60px 60px; /* shrink columns */
-    font-size: 13px; /* reduce font */
-    padding: 8px 10px; /* tighter padding */
+    grid-template-columns: 30px 1fr 60px 60px 60px 60px;
+    padding: 6px 10px;
+    font-size: 13px;
   }
 
+  /* Prevent text wrapping */
+  .leaderboard-row div,
+  .leaderboard-header div,
+  .monthly-row div,
+  .monthly-header div {
+    white-space: nowrap;
+  }
+
+  /* Enable horizontal scroll */
   .leaderboard-scroll,
   .month-scroll {
-    overflow-x: auto;        /* allow horizontal scroll */
-    white-space: nowrap;     /* prevent wrapping */
+    overflow-x: auto;
+    overflow-y: auto;
+    white-space: nowrap;
+    padding-bottom: 6px;
+  }
+
+  /* Reduce content padding */
+  .content {
+    padding: 10px;
   }
 }
 
