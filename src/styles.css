@@ -742,4 +742,20 @@
   margin-top: 10px;
 }
 
+@media (max-width: 768px) {
+  .leaderboard-row,
+  .leaderboard-header,
+  .monthly-row,
+  .monthly-header {
+    grid-template-columns: 30px 1fr 60px 60px 60px 60px; /* shrink columns */
+    font-size: 13px; /* reduce font */
+    padding: 8px 10px; /* tighter padding */
+  }
+
+  .leaderboard-scroll,
+  .month-scroll {
+    overflow-x: auto;        /* allow horizontal scroll */
+    white-space: nowrap;     /* prevent wrapping */
+  }
+}
 
