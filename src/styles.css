@@ -743,6 +743,14 @@
   margin-top: 10px;
 }
 @media (max-width: 768px) {
+  .avatar-grid {
+    grid-template-columns: repeat(3, 1fr); /* or 2 if you want bigger */
+    gap: 14px;
+  }
+
+  .avatar-scroll {
+    max-height: 260px; /* give more room */
+  }
 
   /* Reduce the space between Team/Player and Played */
   .leaderboard-row,
