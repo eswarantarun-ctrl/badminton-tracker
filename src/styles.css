@@ -743,14 +743,7 @@
   margin-top: 10px;
 }
 @media (max-width: 768px) {
-  .avatar-grid {
-    grid-template-columns: repeat(3, 1fr); /* or 2 if you want bigger */
-    gap: 14px;
-  }
-
-  .avatar-scroll {
-    max-height: 260px; /* give more room */
-  }
+  
 
   /* Reduce the space between Team/Player and Played */
   .leaderboard-row,
@@ -803,4 +796,16 @@
 @font-face {
   font-family: "Bauhaus93";
   src: url("/fonts/BAUHS93.ttf") format("truetype");
+}
+
+/* FINAL MOBILE FIX — must be last */
+@media (max-width: 768px) {
+  .avatar-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  .avatar-scroll {
+    max-height: 260px !important;
+  }
 }
