@@ -10,6 +10,8 @@ import Login from "./components/Login";
 import AddGame from "./components/AddGame";
 import Profile from "./components/Profile";
 import DailyRanking from "./components/DailyRanking";
+import Have4Morph from "./components/Have4Morph";
+
 
 
 export default function App() {
@@ -65,7 +67,11 @@ export default function App() {
 
         {/* Sidebar */}
         <div className={`sidebar ${menuOpen ? "sidebar-open" : ""}`}>
-          <div className="sidebar-header">HAVE 4?</div>
+          <div className="sidebar-header">
+            <Have4Morph />
+          </div>
+
+
 
           {menuItems.map((item) => {
             const active = selected === item;

@@ -445,7 +445,8 @@
 .players-grid {
   margin-top: 30px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); /* was 280px */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+
   gap: 30px;
   padding: 20px;
 }
@@ -742,15 +743,18 @@
   margin-top: 10px;
 }
 @media (max-width: 768px) {
+
+  /* Reduce the space between Team/Player and Played */
   .leaderboard-row,
   .leaderboard-header,
   .monthly-row,
   .monthly-header {
-    grid-template-columns: 30px 1fr 60px 60px 60px 60px;
+    grid-template-columns: 30px 120px 60px 60px 60px 60px;
+    padding: 6px 10px;
+    font-size: 13px;
   }
-}
 
-  /* Prevent text wrapping */
+  /* Prevent wrapping */
   .leaderboard-row div,
   .leaderboard-header div,
   .monthly-row div,
@@ -758,14 +762,15 @@
     white-space: nowrap;
   }
 
-  /* Enable horizontal scroll */
+  /* Horizontal scroll */
   .leaderboard-scroll,
   .month-scroll {
     overflow-x: auto;
     overflow-y: auto;
     white-space: nowrap;
-    padding-bottom: 6px;
+    width: 100%;
   }
+}
 
   /* Reduce content padding */
   .content {
@@ -787,4 +792,7 @@
 .monthly-header {
   min-width: 520px; /* forces horizontal scroll */
 }
-
+@font-face {
+  font-family: "Bauhaus93";
+  src: url("/fonts/BAUHS93.ttf") format("truetype");
+}

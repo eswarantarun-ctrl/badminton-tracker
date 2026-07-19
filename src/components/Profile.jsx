@@ -44,18 +44,32 @@ export default function Profile() {
   }, []);
 
   const saveAvatar = async () => {
-    setSaving(true);
+  setSaving(true);
 
-    const { data: userData } = await supabase.auth.getUser();
-    const user = userData?.user;
-
-    await supabase
-      .from("players")
-      .update({ avatar_url: avatarUrl })
-      .eq("user_id", user.id);
-
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError || !userData?.user) {
+    console.log("AUTH ERROR:", userError);
     setSaving(false);
-  };
+    return;
+  }
+
+  const user = userData.user;
+
+  const { error: updateError } = await supabase
+    .from("players")
+    .update({ avatar_url: avatarUrl })
+    .eq("user_id", user.id);
+
+  console.log("UPDATE RESULT:", updateError || "OK");
+  console.log("LOGGED IN USER:", user.id);
+
+
+  // 🔔 Notify Players page
+  window.dispatchEvent(new Event("avatar-updated"));
+
+  setSaving(false);
+};
+
 
   return (
     <div className="profile-page">

@@ -155,7 +155,7 @@ export default function DailyRanking() {
   return (
     <div className="leaderboard-page">
 
-      {/* ⭐ Tabs match leaderboard style */}
+      {/* Tabs */}
       <div className="leaderboard-tabs">
         <button
           className={`tab-btn ${activeTab === "teams" ? "active" : ""}`}
@@ -172,7 +172,7 @@ export default function DailyRanking() {
         </button>
       </div>
 
-      {/* ⭐ Date navigation uses Monthly Ranking chevrons */}
+      {/* Date navigation */}
       <div className="month-toggle">
         <button
           className="month-arrow"
@@ -207,12 +207,12 @@ export default function DailyRanking() {
 
           {teamStats.map((t, index) => (
             <div key={t.id} className="leaderboard-row">
-              <div>{index + 1}</div>
-              <div>{t.name}</div>
-              <div>{t.played}</div>
-              <div>{t.wins}</div>
-              <div>{t.losses}</div>
-              <div>{t.winPct}%</div>
+              <div className="leaderboard-rank">{index + 1}</div>
+              <div className="leaderboard-name">{t.name}</div>
+              <div className="leaderboard-stat">{t.played}</div>
+              <div className="leaderboard-stat">{t.wins}</div>
+              <div className="leaderboard-stat">{t.losses}</div>
+              <div className="leaderboard-stat">{t.winPct}%</div>
             </div>
           ))}
         </div>
@@ -232,12 +232,12 @@ export default function DailyRanking() {
 
           {playerStats.map((p, index) => (
             <div key={p.id} className="leaderboard-row">
-              <div>{index + 1}</div>
-              <div>{p.name}</div>
-              <div>{p.played}</div>
-              <div>{p.wins}</div>
-              <div>{p.losses}</div>
-              <div>{p.winPct}%</div>
+              <div className="leaderboard-rank">{index + 1}</div>
+              <div className="leaderboard-name">{p.name}</div>
+              <div className="leaderboard-stat">{p.played}</div>
+              <div className="leaderboard-stat">{p.wins}</div>
+              <div className="leaderboard-stat">{p.losses}</div>
+              <div className="leaderboard-stat">{p.winPct}%</div>
             </div>
           ))}
         </div>
