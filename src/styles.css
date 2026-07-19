@@ -731,6 +731,13 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
+.avatar-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+}
+
 
 .save-avatar-btn {
   background: #000000;
@@ -801,7 +808,7 @@
 /* FINAL MOBILE FIX — must be last */
 @media (max-width: 768px) {
   .avatar-grid {
-    grid-template-columns: repeat(10, 1fr) !important;
+    grid-template-columns: repeat(4, 1fr) !important;
     gap: 14px !important;
   }
 
