@@ -27,7 +27,6 @@ export default function AddGame() {
     return players.filter((p) => !excludeIds.includes(String(p.id)));
   }
 
-  // ⭐ Quick preset selection logic
   function handlePresetSelect(playerId, setter) {
     setter(playerId);
   }
@@ -141,16 +140,13 @@ export default function AddGame() {
         teamB_id: teamB.id,
         winner_team_id: winnerTeamId,
         loser_team_id: loserTeamId,
-        date: new Date().toISOString(),
-        created_by: player.id,
+        created_by: player.id
       })
       .select()
       .single();
 
     if (matchError) {
       console.log("MATCH ERROR:", matchError);
-      console.log("TEAM A:", teamA);
-      console.log("TEAM B:", teamB);
       setMessage("Error saving match.");
       return;
     }
@@ -171,16 +167,18 @@ export default function AddGame() {
     setMessage("Game saved successfully!");
   }
 
+  const scorePresets = Array.from({ length: 9 }, (_, i) => 14 + i); // 14–22
+
   return (
-    <div className="add-game-page">
+    <div className="add-game-page scroll-both">
 
       {/* ⭐ PLAYER PRESET BUTTONS */}
       <div className="preset-box">
-       
+        <h3>Quick Select Players</h3>
         <div className="preset-row">
           {players.map((p) => {
             const used = [p1, p2, p3, p4].includes(p.id);
-            if (used) return null; // hide preset if already selected
+            if (used) return null;
 
             return (
               <button
@@ -271,16 +269,13 @@ export default function AddGame() {
             value={scoreA}
             onChange={(e) => setScoreA(e.target.value)}
           />
+
           <div className="quick-score-buttons">
-            <button onClick={() => setScoreA(22)}>22</button>
-            <button onClick={() => setScoreA(21)}>21</button>
-            <button onClick={() => setScoreA(20)}>20</button>
-            <button onClick={() => setScoreA(19)}>19</button>
-            <button onClick={() => setScoreA(18)}>18</button>
-            <button onClick={() => setScoreA(17)}>17</button>
-            <button onClick={() => setScoreA(16)}>16</button>
-            <button onClick={() => setScoreA(15)}>15</button>
-            <button onClick={() => setScoreA(14)}>14</button>
+            {scorePresets.map((num) => (
+              <button key={num} onClick={() => setScoreA(num)}>
+                {num}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -291,16 +286,13 @@ export default function AddGame() {
             value={scoreB}
             onChange={(e) => setScoreB(e.target.value)}
           />
+
           <div className="quick-score-buttons">
-            <button onClick={() => setScoreB(22)}>22</button>
-            <button onClick={() => setScoreB(21)}>21</button>
-            <button onClick={() => setScoreB(20)}>20</button>
-            <button onClick={() => setScoreB(19)}>19</button>
-            <button onClick={() => setScoreB(18)}>18</button>
-            <button onClick={() => setScoreB(17)}>17</button>
-            <button onClick={() => setScoreB(16)}>16</button>
-            <button onClick={() => setScoreB(15)}>15</button>
-            <button onClick={() => setScoreB(14)}>14</button>
+            {scorePresets.map((num) => (
+              <button key={num} onClick={() => setScoreB(num)}>
+                {num}
+              </button>
+            ))}
           </div>
         </div>
 

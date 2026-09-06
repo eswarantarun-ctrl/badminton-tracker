@@ -878,3 +878,29 @@
     max-height: 260px !important;
   }
 }
+
+/* 📱 Mobile: allow BOTH horizontal + vertical scroll */
+@media (max-width: 768px) {
+  .scroll-both {
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 20px;
+  }
+
+  .scroll-both > * {
+    min-width: 320px;
+    margin-right: 20px;
+  }
+}
+
+/* Optional: nicer scrollbars */
+.scroll-both::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.scroll-both::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
