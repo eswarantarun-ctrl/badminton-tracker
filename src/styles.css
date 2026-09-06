@@ -540,9 +540,26 @@
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-  padding-bottom: 6px;
+  padding: 10px 0; /* important: gives room for scrollbar */
   -webkit-overflow-scrolling: touch;
+  background: #fafafa; /* subtle contrast so scrollbar is visible */
+  border-radius: 6px;
 }
+
+/* Visible scrollbar on mobile */
+.quick-score-buttons::-webkit-scrollbar {
+  height: 8px; /* thicker so mobile shows it */
+}
+
+.quick-score-buttons::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 4px;
+}
+
+.quick-score-buttons::-webkit-scrollbar-track {
+  background: #e8e8e8;
+}
+
 
 .quick-score-buttons button {
   flex: 0 0 auto; /* prevents shrinking */

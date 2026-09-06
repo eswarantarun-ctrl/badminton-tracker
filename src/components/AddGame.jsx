@@ -167,7 +167,7 @@ export default function AddGame() {
     setMessage("Game saved successfully!");
   }
 
-  const scorePresets = Array.from({ length: 9 }, (_, i) => 14 + i); // 14–22
+  const scorePresets = Array.from({ length: 23 }, (_, i) => 22 - i); // 14–22
 
   return (
     <div className="add-game-page scroll-both">
