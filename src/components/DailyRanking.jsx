@@ -9,13 +9,19 @@ export default function DailyRanking() {
   const [teamStats, setTeamStats] = useState([]);
   const [playerStats, setPlayerStats] = useState([]);
 
+  // ⭐ Correct Wisconsin date normalization
   function normalizeDate(d) {
     if (!d) return "";
-    try {
-      return new Date(d).toISOString().slice(0, 10);
-    } catch {
-      return String(d).split("T")[0].split(" ")[0];
-    }
+
+    const local = new Date(d).toLocaleString("en-US", {
+      timeZone: "America/Chicago",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    });
+
+    const [mm, dd, yyyy] = local.split("/");
+    return `${yyyy}-${mm}-${dd}`;
   }
 
   useEffect(() => {
@@ -49,6 +55,7 @@ export default function DailyRanking() {
         .from("matches")
         .select("winner_team_id, loser_team_id, date");
 
+      // ⭐ Filter using normalized Wisconsin date
       const todaysMatches = matches.filter(
         m => normalizeDate(m.date) === day
       );

@@ -23,9 +23,13 @@ export default function AddGame() {
     loadPlayers();
   }, []);
 
-  // Helper: filter out already selected players
   function availablePlayers(excludeIds = []) {
-    return players.filter(p => !excludeIds.includes(String(p.id)));
+    return players.filter((p) => !excludeIds.includes(String(p.id)));
+  }
+
+  // ⭐ Quick preset selection logic
+  function handlePresetSelect(playerId, setter) {
+    setter(playerId);
   }
 
   async function getOrCreateTeam(playerA, playerB) {
@@ -45,8 +49,8 @@ export default function AddGame() {
       .select("id, display_name")
       .in("id", [pp1, pp2]);
 
-    const name1 = playersData.find(p => p.id === pp1).display_name;
-    const name2 = playersData.find(p => p.id === pp2).display_name;
+    const name1 = playersData.find((p) => p.id === pp1).display_name;
+    const name2 = playersData.find((p) => p.id === pp2).display_name;
 
     const { data: newTeam, error } = await supabase
       .from("teams")
@@ -68,6 +72,20 @@ export default function AddGame() {
 
   async function handleSave() {
     setMessage("Saving...");
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    const { data: player, error: playerError } = await supabase
+      .from("players")
+      .select("id")
+      .eq("auth_user_id", user.id)
+      .single();
+
+    if (playerError || !player) {
+      console.log("PLAYER MAP ERROR:", playerError);
+      setMessage("Error: logged-in user is not linked to a player.");
+      return;
+    }
 
     if (!p1 || !p2 || !p3 || !p4) {
       setMessage("Please select all 4 players.");
@@ -123,7 +141,8 @@ export default function AddGame() {
         teamB_id: teamB.id,
         winner_team_id: winnerTeamId,
         loser_team_id: loserTeamId,
-        date: new Date().toISOString().slice(0, 10),
+        date: new Date().toISOString(),
+        created_by: player.id,
       })
       .select()
       .single();
@@ -154,6 +173,34 @@ export default function AddGame() {
 
   return (
     <div className="add-game-page">
+
+      {/* ⭐ PLAYER PRESET BUTTONS */}
+      <div className="preset-box">
+       
+        <div className="preset-row">
+          {players.map((p) => {
+            const used = [p1, p2, p3, p4].includes(p.id);
+            if (used) return null; // hide preset if already selected
+
+            return (
+              <button
+                key={p.id}
+                className="preset-btn"
+                onClick={() => {
+                  if (!p1) return handlePresetSelect(p.id, setP1);
+                  if (!p2) return handlePresetSelect(p.id, setP2);
+                  if (!p3) return handlePresetSelect(p.id, setP3);
+                  if (!p4) return handlePresetSelect(p.id, setP4);
+                }}
+              >
+                {p.display_name}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ⭐ TEAM SELECTION */}
       <div className="teams-box">
         <div className="team-row">
           <div className="team-block">
@@ -214,7 +261,9 @@ export default function AddGame() {
         </div>
       </div>
 
+      {/* ⭐ SCORE INPUT + QUICK BUTTONS */}
       <div className="score-box">
+
         <div className="score-row">
           <label>Score (Team 1)</label>
           <input
@@ -222,6 +271,17 @@ export default function AddGame() {
             value={scoreA}
             onChange={(e) => setScoreA(e.target.value)}
           />
+          <div className="quick-score-buttons">
+            <button onClick={() => setScoreA(22)}>22</button>
+            <button onClick={() => setScoreA(21)}>21</button>
+            <button onClick={() => setScoreA(20)}>20</button>
+            <button onClick={() => setScoreA(19)}>19</button>
+            <button onClick={() => setScoreA(18)}>18</button>
+            <button onClick={() => setScoreA(17)}>17</button>
+            <button onClick={() => setScoreA(16)}>16</button>
+            <button onClick={() => setScoreA(15)}>15</button>
+            <button onClick={() => setScoreA(14)}>14</button>
+          </div>
         </div>
 
         <div className="score-row">
@@ -231,7 +291,19 @@ export default function AddGame() {
             value={scoreB}
             onChange={(e) => setScoreB(e.target.value)}
           />
+          <div className="quick-score-buttons">
+            <button onClick={() => setScoreB(22)}>22</button>
+            <button onClick={() => setScoreB(21)}>21</button>
+            <button onClick={() => setScoreB(20)}>20</button>
+            <button onClick={() => setScoreB(19)}>19</button>
+            <button onClick={() => setScoreB(18)}>18</button>
+            <button onClick={() => setScoreB(17)}>17</button>
+            <button onClick={() => setScoreB(16)}>16</button>
+            <button onClick={() => setScoreB(15)}>15</button>
+            <button onClick={() => setScoreB(14)}>14</button>
+          </div>
         </div>
+
       </div>
 
       <button className="save-btn" onClick={handleSave}>

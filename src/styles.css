@@ -532,6 +532,68 @@
   text-align: right;
   color: #222;
 }
+.quick-score-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.quick-score-buttons button {
+  padding: 6px 12px;
+  background: #eaeaea;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.quick-score-buttons button:hover {
+  background: #dcdcdc;
+}
+/* Preset buttons (used for Compare + Clear too) */
+.preset-btn {
+  padding: 8px 14px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.preset-btn:hover {
+  background: #e0e0e0;
+}
+
+/* Preset container */
+.preset-box {
+  margin-bottom: 20px;
+}
+
+.preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Styled dropdown */
+.styled-select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fafafa;
+  font-size: 14px;
+  width: 150px;
+}
+
+/* Action row for Compare + Clear */
+.action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+
 
 /* MOBILE */
 @media (max-width: 768px) {
