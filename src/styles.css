@@ -532,13 +532,20 @@
   text-align: right;
   color: #222;
 }
+/* Horizontal scroll for score presets */
 .quick-score-buttons {
   display: flex;
+  flex-direction: row;
   gap: 8px;
-  margin-top: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .quick-score-buttons button {
+  flex: 0 0 auto; /* prevents shrinking */
   padding: 6px 12px;
   background: #eaeaea;
   border: 1px solid #ccc;
@@ -546,6 +553,7 @@
   cursor: pointer;
   font-size: 14px;
 }
+
 
 .quick-score-buttons button:hover {
   background: #dcdcdc;
